@@ -1,5 +1,6 @@
 package com.assignment.bhc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +23,9 @@ public class Transaction {
 
     private String transactionDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
+    @JsonIgnore
     private Account account;
 
 }

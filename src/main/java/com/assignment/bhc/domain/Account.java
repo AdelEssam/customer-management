@@ -1,8 +1,11 @@
 package com.assignment.bhc.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
+
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,8 +25,9 @@ public class Account {
 
     private String creationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     @OneToMany(mappedBy = "account" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)

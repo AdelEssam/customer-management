@@ -1,6 +1,6 @@
 package com.assignment.bhc.controller;
 
-import com.assignment.bhc.dto.AccountDto;
+import com.assignment.bhc.dto.AccountRequestDto;
 import com.assignment.bhc.factory.AccountFactory;
 import com.assignment.bhc.service.IAccountService;
 import org.springframework.http.HttpStatus;
@@ -28,13 +28,13 @@ public class AccountManagementController {
     }
 
     @PostMapping()
-    public ResponseEntity openAccount(@Valid @RequestBody AccountDto accountDto){
+    public ResponseEntity openAccount(@Valid @RequestBody AccountRequestDto accountRequestDto){
         useCase = request.getHeader("use-case");
         IAccountService accountService = accountFactory.getClient(useCase);
         if (accountService == null)
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         try {
-            AccountDto account = accountService.openNewAccount(accountDto);
+             accountService.openNewAccount(accountRequestDto);
         } catch (Throwable e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

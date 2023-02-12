@@ -1,17 +1,22 @@
 package com.assignment.bhc.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-@Data
+import java.io.Serializable;
+
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionDto {
-
-    private String transactionType;
+public class TransactionDto implements Serializable {
 
     private double amount;
 
+    private String transactionDate;
+
+    @JsonIgnore
     private AccountDto accountDto;
 
 }

@@ -2,6 +2,7 @@ package com.assignment.bhc.dto.enums;
 
 public enum UseCase {
 
+    GET_ALL_CUSTOMERS("allCustomers"),
     OPEN_NEW_ACCOUNT("openAccount");
 
     private final String name;

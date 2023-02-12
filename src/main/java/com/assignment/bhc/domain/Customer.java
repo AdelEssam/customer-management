@@ -1,7 +1,9 @@
 package com.assignment.bhc.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 import javax.persistence.*;
@@ -22,6 +24,6 @@ public class Customer {
 
     private String  surname;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private Set<Account> accounts;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Account> account;
 }

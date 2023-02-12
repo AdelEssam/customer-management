@@ -5,15 +5,18 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CustomerDto implements Serializable {
 
+    private  Long id;
+
     private String name;
 
     private String  surname;
 
-    private Set<AccountDto> accountsDTO;
+    private Set<AccountDto> account;
 }
