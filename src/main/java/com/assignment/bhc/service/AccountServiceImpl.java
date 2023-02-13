@@ -7,11 +7,13 @@ import com.assignment.bhc.dto.AccountRequestDto;
 import com.assignment.bhc.exception.AccountExceptions;
 import com.assignment.bhc.repository.AccountRepository;
 import com.assignment.bhc.repository.CustomerRepository;
+import com.assignment.bhc.utilities.audit.LoggableAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,13 +33,14 @@ public class AccountServiceImpl implements IAccountService {
 
 
     @Override
-    public void openNewAccount(AccountRequestDto accountRequestDto) throws AccountExceptions,Exception {
+    @LoggableAction(action = "Open new account", layer = "Service", method = "newAccountRequest")
+    public void newAccountRequest(AccountRequestDto accountRequestDto) throws AccountExceptions,Exception {
         try {
             Optional<Customer> customer = customerRepository.findById(accountRequestDto.getCustomerID());
             if(!customer.isPresent())
                 throw new AccountExceptions.openNewAccountExceptions("Customer not found while opening account..!");
 
-            Account account = openNewAccount(accountRequestDto, customer.get());
+            Account account = addAccountToCustomer(accountRequestDto, customer.get());
             accountRepository.save(account);
         }catch (AccountExceptions ac) {
             throw new AccountExceptions.openNewAccountExceptions("Customer Not Found..!");
@@ -48,7 +51,8 @@ public class AccountServiceImpl implements IAccountService {
         }
     }
 
-    private Account openNewAccount(AccountRequestDto accountRequestDto, Customer customer) throws Exception{
+    @LoggableAction(action = "Add account to customer", layer = "Service", method = "addAccountToCustomer")
+    private Account addAccountToCustomer(AccountRequestDto accountRequestDto, Customer customer) throws Exception, AccountExceptions.openNewAccountExceptions {
         Account account = new Account();
         account.setCustomer(customer);
         account.setBalance(accountRequestDto.getInitialCredit());
@@ -59,14 +63,19 @@ public class AccountServiceImpl implements IAccountService {
         return account;
     }
 
-    private void transferNewTransaction(AccountRequestDto accountRequestDto, Account account) throws Exception{
+    @LoggableAction(action = "Transfer new transaction", layer = "Service", method = "transferNewTransaction")
+    private void transferNewTransaction(AccountRequestDto accountRequestDto, Account account) throws Exception, AccountExceptions.openNewAccountExceptions {
         Set<Transaction> transactions = new HashSet<Transaction>();
-        Transaction transaction = new Transaction();
-        transaction.setAccount(account);
-        transaction.setAmount(accountRequestDto.getInitialCredit());
-        transaction.setTransactionDate(new Date().toString());
-        transactions.add(transaction);
-        account.setTransaction(transactions);
+        try {
+            Transaction transaction = new Transaction();
+            transaction.setAccount(account);
+            transaction.setAmount(accountRequestDto.getInitialCredit());
+            transaction.setTransactionDate(new Date().toString());
+            transactions.add(transaction);
+            account.setTransaction(transactions);
+        }catch (Exception e){
+            throw new AccountExceptions.openNewAccountExceptions("Unable to add new transaction: "+e.getMessage());
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.assignment.bhc.controller;
 import com.assignment.bhc.dto.AccountRequestDto;
 import com.assignment.bhc.factory.AccountFactory;
 import com.assignment.bhc.service.IAccountService;
+import com.assignment.bhc.utilities.audit.LoggableAction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +29,14 @@ public class AccountManagementController {
     }
 
     @PostMapping()
-    public ResponseEntity openAccount(@Valid @RequestBody AccountRequestDto accountRequestDto){
+    @LoggableAction(action = "New account request", layer = "Controller", method = "openAccount")
+    public ResponseEntity accountRequest(@Valid @RequestBody AccountRequestDto accountRequestDto){
         useCase = request.getHeader("use-case");
         IAccountService accountService = accountFactory.getClient(useCase);
         if (accountService == null)
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         try {
-             accountService.openNewAccount(accountRequestDto);
+             accountService.newAccountRequest(accountRequestDto);
         } catch (Throwable e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
