@@ -35,7 +35,7 @@ public class AccountServiceImpl implements IAccountService {
         try {
             Optional<Customer> customer = customerRepository.findById(accountRequestDto.getCustomerID());
             if(!customer.isPresent())
-                throw new AccountExceptions.openNewAccountExceptions("Customer not found..!");
+                throw new AccountExceptions.openNewAccountExceptions("Customer not found while opening account..!");
 
             Account account = openNewAccount(accountRequestDto, customer.get());
             accountRepository.save(account);
