@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "79f0b529-4495-4f1b-9fcd-4885a344e1ce",
+		"name": "Account-management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get customer by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "use-case",
+						"value": "customer",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8081/service/customer/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"service",
+						"customer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "open new account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "use-case",
+						"value": "openAccount",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerID\":\"1\",\r\n    \"initialCredit\":10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/service/openAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"service",
+						"openAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all customer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "use-case",
+						"value": "allCustomers",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8081/service/customer",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"service",
+						"customer"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
