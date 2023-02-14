@@ -3,17 +3,17 @@ package com.assignment.bhc.service;
 import com.assignment.bhc.domain.Account;
 import com.assignment.bhc.domain.Customer;
 import com.assignment.bhc.domain.Transaction;
+import com.assignment.bhc.dto.AccountDto;
 import com.assignment.bhc.dto.AccountRequestDto;
 import com.assignment.bhc.exception.AccountExceptions;
 import com.assignment.bhc.repository.AccountRepository;
 import com.assignment.bhc.repository.CustomerRepository;
+import com.assignment.bhc.utilities.ObjectMapperUtils;
 import com.assignment.bhc.utilities.audit.LoggableAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import javax.security.auth.login.AccountException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -34,14 +34,15 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     @LoggableAction(action = "Open new account", layer = "Service", method = "newAccountRequest")
-    public void newAccountRequest(AccountRequestDto accountRequestDto) throws AccountExceptions,Exception {
+    public AccountDto newAccountRequest(AccountRequestDto accountRequestDto) throws AccountExceptions,Exception {
         try {
             Optional<Customer> customer = customerRepository.findById(accountRequestDto.getCustomerID());
             if(!customer.isPresent())
                 throw new AccountExceptions.openNewAccountExceptions("Customer not found while opening account..!");
-
             Account account = addAccountToCustomer(accountRequestDto, customer.get());
-            accountRepository.save(account);
+            System.out.println(account.toString());
+            return ObjectMapperUtils.map(accountRepository.save(account),AccountDto.class);
+
         }catch (AccountExceptions ac) {
             throw new AccountExceptions.openNewAccountExceptions("Customer Not Found..!");
         }

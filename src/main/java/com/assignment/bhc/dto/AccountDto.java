@@ -13,6 +13,8 @@ import java.util.Set;
 @Builder
 public class AccountDto implements Serializable {
 
+    private Long id;
+
     private double balance;
 
     private String creationDate;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Table(name = "ACCOUNT")
 @Setter
 @Getter
+@ToString
 public class Account {
 
     @Id

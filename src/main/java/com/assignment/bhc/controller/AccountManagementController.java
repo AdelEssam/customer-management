@@ -1,5 +1,6 @@
 package com.assignment.bhc.controller;
 
+import com.assignment.bhc.dto.AccountDto;
 import com.assignment.bhc.dto.AccountRequestDto;
 import com.assignment.bhc.factory.AccountFactory;
 import com.assignment.bhc.service.IAccountService;
@@ -33,13 +34,14 @@ public class AccountManagementController {
     public ResponseEntity accountRequest(@Valid @RequestBody AccountRequestDto accountRequestDto){
         useCase = request.getHeader("use-case");
         IAccountService accountService = accountFactory.getClient(useCase);
+        AccountDto accountDto=null;
         if (accountService == null)
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         try {
-             accountService.newAccountRequest(accountRequestDto);
+             accountDto=accountService.newAccountRequest(accountRequestDto);
         } catch (Throwable e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountDto);
     }
 }

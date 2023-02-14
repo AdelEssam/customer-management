@@ -12,6 +12,8 @@ import java.io.Serializable;
 @Builder
 public class TransactionDto implements Serializable {
 
+    private Long id;
+
     private double amount;
 
     private String transactionDate;

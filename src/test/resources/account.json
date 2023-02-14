@@ -1,0 +1,10 @@
+{
+  "balance": 10.0,
+  "creationDate": "Mon Feb 13 19:59:31 EET 2023",
+  "transaction": [
+    {
+      "amount": 10.0,
+      "transactionDate": "Mon Feb 13 19:59:31 EET 2023"
+    }
+  ]
+}

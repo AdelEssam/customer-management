@@ -49,7 +49,7 @@ public class LogAspect {
 			throw e;
 		} finally {
 			logRecord.setResponseTime(System.currentTimeMillis() - startTime);
-			//here we can add log as audit for log all transaction               
+			//here we can add log as audit for log all transaction
 			System.out.println(logRecord.toString());
 
 		}
